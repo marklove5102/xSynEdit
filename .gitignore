@@ -1,0 +1,111 @@
+# Delphi compiled files
+*.dcu
+*.exe
+*.dll
+*.bpl
+*.bpi
+*.dcp
+*.so
+*.apk
+*.drc
+*.map
+*.dres
+*.rsm
+*.tds
+*.dproj.local
+*.groupproj.local
+*.identcache
+*.projdata
+*.stat
+*.~*
+*.local
+*.cbk
+
+# Delphi project backup files
+*.~dpr
+*.~dfm
+*.~pas
+*.~dpk
+*.~dproj
+*.~groupproj
+__history/
+__recovery/
+
+# Build output directories
+Win32/
+Win64/
+Debug/
+Release/
+*.obj
+*.o
+*.a
+*.lib
+
+# IDE cache and settings
+.idea/
+*.dsk
+*.cfg
+ModelSupport/
+ModelSupport_*/
+
+# Documentation temp files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Package cache
+__astcache/
+
+# Test coverage
+*.dcp
+dunit/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Logs
+*.log
+
+# Temporary files
+*.temp
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Compiled DCU files from specific directories
+Lib/
+
+# Exclude build artifacts but keep source
+Packages/Win32/
+Packages/Win64/
+
+# Keep important documentation
+!README.md
+!LICENSE
+!*.md
+
+# Keep demo projects source but not compiled
+Demos/**/Win32/
+Demos/**/Win64/
+Demos/**/__history/
+Demos/**/*.dcu
+Demos/**/*.exe
+
+nul
+NUL
