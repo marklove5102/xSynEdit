@@ -107,5 +107,8 @@ Demos/**/__history/
 Demos/**/*.dcu
 Demos/**/*.exe
 
+# Registry backups (created by installer)
+Backups/
+
 nul
 NUL
