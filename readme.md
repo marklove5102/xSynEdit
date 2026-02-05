@@ -121,9 +121,11 @@ end;
 
 ## Documentation
 
-- [OPTIMIZATION_SUMMARY.md](OPTIMIZATION_SUMMARY.md) - detailed optimization report
-- [HIGHLIGHTERS_MODERNIZATION.md](HIGHLIGHTERS_MODERNIZATION.md) - modern highlighters
-- [MEMORY_LIMITS_CALCULATION.md](MEMORY_LIMITS_CALCULATION.md) - safe limits calculation
+- [OPTIMIZATION_SUMMARY.md](Doc/OPTIMIZATION_SUMMARY.md) - detailed optimization report
+- [HIGHLIGHTERS_MODERNIZATION.md](Doc/HIGHLIGHTERS_MODERNIZATION.md) - modern highlighters
+- [MEMORY_LIMITS_CALCULATION.md](Doc/MEMORY_LIMITS_CALCULATION.md) - safe limits calculation
+- [INSTALLATION_FAQ.md](Doc/INSTALLATION_FAQ.md) - installation troubleshooting
+- [All documentation](Doc/) - complete documentation folder
 
 ## License
 
@@ -246,9 +248,11 @@ end;
 
 ## Документация
 
-- [OPTIMIZATION_SUMMARY.md](OPTIMIZATION_SUMMARY.md) - детальный отчёт по оптимизациям
-- [HIGHLIGHTERS_MODERNIZATION.md](HIGHLIGHTERS_MODERNIZATION.md) - современные highlighters
-- [MEMORY_LIMITS_CALCULATION.md](MEMORY_LIMITS_CALCULATION.md) - расчёт безопасных лимитов
+- [OPTIMIZATION_SUMMARY.md](Doc/OPTIMIZATION_SUMMARY.md) - детальный отчёт по оптимизациям
+- [HIGHLIGHTERS_MODERNIZATION.md](Doc/HIGHLIGHTERS_MODERNIZATION.md) - современные highlighters
+- [MEMORY_LIMITS_CALCULATION.md](Doc/MEMORY_LIMITS_CALCULATION.md) - расчёт безопасных лимитов
+- [INSTALLATION_FAQ.md](Doc/INSTALLATION_FAQ.md) - решение проблем установки
+- [Вся документация](Doc/) - полная папка документации
 
 ## Лицензия
 
