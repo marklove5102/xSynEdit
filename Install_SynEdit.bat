@@ -110,12 +110,12 @@ echo.
 echo %COLOR_INFO%[3/8] Checking build environment...%COLOR_RESET%
 echo.
 
-set "RSVARS=%IDE_ROOT%\bin\rsvars.bat"
-if not exist "%RSVARS%" (
-    echo %COLOR_ERROR%ERROR: rsvars.bat not found at %RSVARS%!%COLOR_RESET%
+set "RSVARS=!IDE_ROOT!\bin\rsvars.bat"
+if not exist "!RSVARS!" (
+    echo !COLOR_ERROR!ERROR: rsvars.bat not found at !RSVARS!!COLOR_RESET!
     goto :Error
 )
-echo   %COLOR_SUCCESS%[OK]%COLOR_RESET% rsvars.bat found
+echo   !COLOR_SUCCESS![OK]!COLOR_RESET! rsvars.bat found
 echo.
 
 :: ============================================================================
@@ -211,27 +211,27 @@ if %COMPILE_WIN32%==1 (
 
     echo   Building %RUNTIME_PKG% ^(Win32^)...
     > "%BUILD_SCRIPT%" echo @echo off
-    >> "%BUILD_SCRIPT%" echo call "%RSVARS%"
+    >> "%BUILD_SCRIPT%" echo call "!RSVARS!"
     >> "%BUILD_SCRIPT%" echo msbuild.exe "%RUNTIME_DPROJ%" /t:Build /p:Config=Release /p:Platform=Win32 /p:DCC_BplOutput="%BPL_WIN32%" /p:DCC_DcpOutput="%DCP_WIN32%" /v:minimal /nologo
     call "%BUILD_SCRIPT%"
     if errorlevel 1 (
-        echo   %COLOR_ERROR%FAILED!%COLOR_RESET%
+        echo   !COLOR_ERROR!FAILED!!COLOR_RESET!
         del "%BUILD_SCRIPT%" 2>nul
         goto :Error
     )
-    echo   %COLOR_SUCCESS%[OK]%COLOR_RESET% %RUNTIME_PKG%%BDS_SUFFIX%.bpl
+    echo   !COLOR_SUCCESS![OK]!COLOR_RESET! %RUNTIME_PKG%%BDS_SUFFIX%.bpl
 
     echo   Building %DESIGNTIME_PKG% ^(Win32^)...
     > "%BUILD_SCRIPT%" echo @echo off
-    >> "%BUILD_SCRIPT%" echo call "%RSVARS%"
+    >> "%BUILD_SCRIPT%" echo call "!RSVARS!"
     >> "%BUILD_SCRIPT%" echo msbuild.exe "%DESIGNTIME_DPROJ%" /t:Build /p:Config=Release /p:Platform=Win32 /p:DCC_BplOutput="%BPL_WIN32%" /p:DCC_DcpOutput="%DCP_WIN32%" /v:minimal /nologo
     call "%BUILD_SCRIPT%"
     if errorlevel 1 (
-        echo   %COLOR_ERROR%FAILED!%COLOR_RESET%
+        echo   !COLOR_ERROR!FAILED!!COLOR_RESET!
         del "%BUILD_SCRIPT%" 2>nul
         goto :Error
     )
-    echo   %COLOR_SUCCESS%[OK]%COLOR_RESET% %DESIGNTIME_PKG%%BDS_SUFFIX%.bpl
+    echo   !COLOR_SUCCESS![OK]!COLOR_RESET! %DESIGNTIME_PKG%%BDS_SUFFIX%.bpl
     echo.
 )
 
@@ -243,27 +243,27 @@ if %COMPILE_WIN64%==1 (
 
     echo   Building %RUNTIME_PKG% ^(Win64^)...
     > "%BUILD_SCRIPT%" echo @echo off
-    >> "%BUILD_SCRIPT%" echo call "%RSVARS%"
+    >> "%BUILD_SCRIPT%" echo call "!RSVARS!"
     >> "%BUILD_SCRIPT%" echo msbuild.exe "%RUNTIME_DPROJ%" /t:Build /p:Config=Release /p:Platform=Win64 /p:DCC_BplOutput="%BPL_WIN64%" /p:DCC_DcpOutput="%DCP_WIN64%" /v:minimal /nologo
     call "%BUILD_SCRIPT%"
     if errorlevel 1 (
-        echo   %COLOR_ERROR%FAILED!%COLOR_RESET%
+        echo   !COLOR_ERROR!FAILED!!COLOR_RESET!
         del "%BUILD_SCRIPT%" 2>nul
         goto :Error
     )
-    echo   %COLOR_SUCCESS%[OK]%COLOR_RESET% %RUNTIME_PKG%%BDS_SUFFIX%.bpl
+    echo   !COLOR_SUCCESS![OK]!COLOR_RESET! %RUNTIME_PKG%%BDS_SUFFIX%.bpl
 
     echo   Building %DESIGNTIME_PKG% ^(Win64^)...
     > "%BUILD_SCRIPT%" echo @echo off
-    >> "%BUILD_SCRIPT%" echo call "%RSVARS%"
+    >> "%BUILD_SCRIPT%" echo call "!RSVARS!"
     >> "%BUILD_SCRIPT%" echo msbuild.exe "%DESIGNTIME_DPROJ%" /t:Build /p:Config=Release /p:Platform=Win64 /p:DCC_BplOutput="%BPL_WIN64%" /p:DCC_DcpOutput="%DCP_WIN64%" /v:minimal /nologo
     call "%BUILD_SCRIPT%"
     if errorlevel 1 (
-        echo   %COLOR_ERROR%FAILED!%COLOR_RESET%
+        echo   !COLOR_ERROR!FAILED!!COLOR_RESET!
         del "%BUILD_SCRIPT%" 2>nul
         goto :Error
     )
-    echo   %COLOR_SUCCESS%[OK]%COLOR_RESET% %DESIGNTIME_PKG%%BDS_SUFFIX%.bpl
+    echo   !COLOR_SUCCESS![OK]!COLOR_RESET! %DESIGNTIME_PKG%%BDS_SUFFIX%.bpl
     echo.
 )
 
@@ -275,16 +275,16 @@ if %COMPILE_WIN64X%==1 (
 
     echo   Building %RUNTIME_PKG% ^(Win64x^)...
     > "%BUILD_SCRIPT%" echo @echo off
-    >> "%BUILD_SCRIPT%" echo call "%RSVARS%"
+    >> "%BUILD_SCRIPT%" echo call "!RSVARS!"
     >> "%BUILD_SCRIPT%" echo msbuild.exe "%RUNTIME_DPROJ%" /t:Build /p:Config=Release /p:Platform=Win64x /p:DCC_BplOutput="%BPL_WIN64X%" /p:DCC_DcpOutput="%DCP_WIN64X%" /v:minimal /nologo
     call "%BUILD_SCRIPT%"
     if errorlevel 1 (
-        echo   %COLOR_ERROR%FAILED!%COLOR_RESET%
+        echo   !COLOR_ERROR!FAILED!!COLOR_RESET!
         del "%BUILD_SCRIPT%" 2>nul
         goto :Error
     )
-    echo   %COLOR_SUCCESS%[OK]%COLOR_RESET% %RUNTIME_PKG%%BDS_SUFFIX%.bpl
-    echo   %COLOR_INFO%[INFO]%COLOR_RESET% Design-time not needed for Win64x
+    echo   !COLOR_SUCCESS![OK]!COLOR_RESET! %RUNTIME_PKG%%BDS_SUFFIX%.bpl
+    echo   !COLOR_INFO![INFO]!COLOR_RESET! Design-time not needed for Win64x
     echo.
 )
 
@@ -449,18 +449,16 @@ goto :eof
 
 :AddToLibraryPath
 :: Adds a path to Library Search/Browsing Path if not already present
-:: Uses a temp file to safely read registry values without REG_SZ corruption
+:: Uses PowerShell to read registry values cleanly (no REG_SZ parsing issues)
 set "ALP_PLATFORM=%~1"
 set "ALP_VALUENAME=%~2"
 set "ALP_NEWPATH=%~3"
-set "ALP_KEY=HKCU\Software\Embarcadero\BDS\%TARGET_BDS%\Library\%ALP_PLATFORM%"
-set "ALP_TEMPFILE=%TEMP%\regvalue_%RANDOM%.txt"
+set "ALP_KEY=HKCU:\Software\Embarcadero\BDS\%TARGET_BDS%\Library\%ALP_PLATFORM%"
+set "ALP_REGKEY=HKCU\Software\Embarcadero\BDS\%TARGET_BDS%\Library\%ALP_PLATFORM%"
 
-:: Export the value to a temp file and extract just the data
-reg query "%ALP_KEY%" /v "%ALP_VALUENAME%" 2>nul | findstr /c:"%ALP_VALUENAME%" > "%ALP_TEMPFILE%"
+:: Read current value via PowerShell (avoids REG_SZ token parsing bug)
 set "ALP_CURRENT="
-for /f "usebackq tokens=2,*" %%a in ("%ALP_TEMPFILE%") do set "ALP_CURRENT=%%b"
-del "%ALP_TEMPFILE%" 2>nul
+for /f "usebackq delims=" %%a in (`powershell -NoProfile -Command "(Get-ItemProperty '%ALP_KEY%' -ErrorAction SilentlyContinue).'%ALP_VALUENAME%'"`) do set "ALP_CURRENT=%%a"
 
 :: Check if path already exists (case insensitive)
 echo "!ALP_CURRENT!" | findstr /i /c:"%ALP_NEWPATH%" >nul 2>&1
@@ -471,23 +469,22 @@ if errorlevel 1 (
     ) else (
         set "ALP_NEW=%ALP_NEWPATH%"
     )
-    reg add "%ALP_KEY%" /v "%ALP_VALUENAME%" /t REG_SZ /d "!ALP_NEW!" /f >nul 2>&1
-    echo   %COLOR_SUCCESS%[+]%COLOR_RESET% %ALP_PLATFORM% %ALP_VALUENAME%: added
+    reg add "%ALP_REGKEY%" /v "%ALP_VALUENAME%" /t REG_SZ /d "!ALP_NEW!" /f >nul 2>&1
+    echo   !COLOR_SUCCESS![+]!COLOR_RESET! %ALP_PLATFORM% %ALP_VALUENAME%: added
 )
 goto :eof
 
 :AddToCppPath
 :: Adds a path to C++ Include/Library Path
+:: Uses PowerShell to read registry values cleanly (no REG_SZ parsing issues)
 set "ACP_PLATFORM=%~1"
 set "ACP_VALUENAME=%~2"
 set "ACP_NEWPATH=%~3"
-set "ACP_KEY=HKCU\Software\Embarcadero\BDS\%TARGET_BDS%\C++\Paths\%ACP_PLATFORM%"
-set "ACP_TEMPFILE=%TEMP%\regvalue_%RANDOM%.txt"
+set "ACP_KEY=HKCU:\Software\Embarcadero\BDS\%TARGET_BDS%\C++\Paths\%ACP_PLATFORM%"
+set "ACP_REGKEY=HKCU\Software\Embarcadero\BDS\%TARGET_BDS%\C++\Paths\%ACP_PLATFORM%"
 
-reg query "%ACP_KEY%" /v "%ACP_VALUENAME%" 2>nul | findstr /c:"%ACP_VALUENAME%" > "%ACP_TEMPFILE%"
 set "ACP_CURRENT="
-for /f "usebackq tokens=2,*" %%a in ("%ACP_TEMPFILE%") do set "ACP_CURRENT=%%b"
-del "%ACP_TEMPFILE%" 2>nul
+for /f "usebackq delims=" %%a in (`powershell -NoProfile -Command "(Get-ItemProperty '%ACP_KEY%' -ErrorAction SilentlyContinue).'%ACP_VALUENAME%'"`) do set "ACP_CURRENT=%%a"
 
 echo "!ACP_CURRENT!" | findstr /i /c:"%ACP_NEWPATH%" >nul 2>&1
 if errorlevel 1 (
@@ -496,7 +493,7 @@ if errorlevel 1 (
     ) else (
         set "ACP_NEW=%ACP_NEWPATH%"
     )
-    reg add "%ACP_KEY%" /v "%ACP_VALUENAME%" /t REG_SZ /d "!ACP_NEW!" /f >nul 2>&1
+    reg add "%ACP_REGKEY%" /v "%ACP_VALUENAME%" /t REG_SZ /d "!ACP_NEW!" /f >nul 2>&1
 )
 goto :eof
 

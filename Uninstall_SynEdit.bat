@@ -321,16 +321,15 @@ goto :eof
 
 :RemoveFromLibraryPath
 :: Removes SynEdit paths from Library configuration
+:: Uses PowerShell to read registry values cleanly (no REG_SZ parsing issues)
 set "RLP_PLATFORM=%~1"
 set "RLP_VALUENAME=%~2"
-set "RLP_KEY=HKCU\Software\Embarcadero\BDS\%TARGET_BDS%\Library\%RLP_PLATFORM%"
-set "RLP_TEMPFILE=%TEMP%\regvalue_%RANDOM%.txt"
+set "RLP_KEY=HKCU:\Software\Embarcadero\BDS\%TARGET_BDS%\Library\%RLP_PLATFORM%"
+set "RLP_REGKEY=HKCU\Software\Embarcadero\BDS\%TARGET_BDS%\Library\%RLP_PLATFORM%"
 
-:: Read current value safely
-reg query "%RLP_KEY%" /v "%RLP_VALUENAME%" 2>nul | findstr /c:"%RLP_VALUENAME%" > "%RLP_TEMPFILE%"
+:: Read current value via PowerShell
 set "RLP_CURRENT="
-for /f "usebackq tokens=2,*" %%a in ("%RLP_TEMPFILE%") do set "RLP_CURRENT=%%b"
-del "%RLP_TEMPFILE%" 2>nul
+for /f "usebackq delims=" %%a in (`powershell -NoProfile -Command "(Get-ItemProperty '%RLP_KEY%' -ErrorAction SilentlyContinue).'%RLP_VALUENAME%'"`) do set "RLP_CURRENT=%%a"
 
 if defined RLP_CURRENT (
     set "RLP_NEW=!RLP_CURRENT!"
@@ -346,8 +345,8 @@ if defined RLP_CURRENT (
     if "!RLP_NEW:~-1!"==";" set "RLP_NEW=!RLP_NEW:~0,-1!"
 
     :: Update registry
-    reg add "%RLP_KEY%" /v "%RLP_VALUENAME%" /t REG_SZ /d "!RLP_NEW!" /f >nul 2>&1
-    echo   %COLOR_SUCCESS%[OK]%COLOR_RESET% %RLP_PLATFORM% %RLP_VALUENAME%: cleaned
+    reg add "%RLP_REGKEY%" /v "%RLP_VALUENAME%" /t REG_SZ /d "!RLP_NEW!" /f >nul 2>&1
+    echo   !COLOR_SUCCESS![OK]!COLOR_RESET! %RLP_PLATFORM% %RLP_VALUENAME%: cleaned
 ) else (
     echo   %COLOR_WARN%[--]%COLOR_RESET% %RLP_PLATFORM% %RLP_VALUENAME%: not found
 )
@@ -355,17 +354,16 @@ goto :eof
 
 :RemoveFromCppPath
 :: Removes SynEdit paths from C++ configuration (both Debug and Release)
+:: Uses PowerShell to read registry values cleanly (no REG_SZ parsing issues)
 set "RCP_PLATFORM=%~1"
 set "RCP_VALUENAME=%~2"
-set "RCP_KEY=HKCU\Software\Embarcadero\BDS\%TARGET_BDS%\C++\Paths\%RCP_PLATFORM%"
-set "RCP_TEMPFILE=%TEMP%\regvalue_%RANDOM%.txt"
+set "RCP_KEY=HKCU:\Software\Embarcadero\BDS\%TARGET_BDS%\C++\Paths\%RCP_PLATFORM%"
+set "RCP_REGKEY=HKCU\Software\Embarcadero\BDS\%TARGET_BDS%\C++\Paths\%RCP_PLATFORM%"
 set "RCP_CPPPATH_DEBUG=%SYNEDIT_ROOT%\Packages\11AndAbove\cpp\%RCP_PLATFORM%\Debug"
 set "RCP_CPPPATH_RELEASE=%SYNEDIT_ROOT%\Packages\11AndAbove\cpp\%RCP_PLATFORM%\Release"
 
-reg query "%RCP_KEY%" /v "%RCP_VALUENAME%" 2>nul | findstr /c:"%RCP_VALUENAME%" > "%RCP_TEMPFILE%"
 set "RCP_CURRENT="
-for /f "usebackq tokens=2,*" %%a in ("%RCP_TEMPFILE%") do set "RCP_CURRENT=%%b"
-del "%RCP_TEMPFILE%" 2>nul
+for /f "usebackq delims=" %%a in (`powershell -NoProfile -Command "(Get-ItemProperty '%RCP_KEY%' -ErrorAction SilentlyContinue).'%RCP_VALUENAME%'"`) do set "RCP_CURRENT=%%a"
 
 if defined RCP_CURRENT (
     set "RCP_NEW=!RCP_CURRENT!"
@@ -379,7 +377,7 @@ if defined RCP_CURRENT (
     set "RCP_NEW=!RCP_NEW:;;=;!"
     if "!RCP_NEW:~-1!"==";" set "RCP_NEW=!RCP_NEW:~0,-1!"
 
-    reg add "%RCP_KEY%" /v "%RCP_VALUENAME%" /t REG_SZ /d "!RCP_NEW!" /f >nul 2>&1
+    reg add "%RCP_REGKEY%" /v "%RCP_VALUENAME%" /t REG_SZ /d "!RCP_NEW!" /f >nul 2>&1
 )
 goto :eof
 
