@@ -5,7 +5,7 @@
         <Config Condition="'$(Config)'==''">Release</Config>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>SynEditDR.dpk</MainSource>
-        <Platform Condition="'$(Platform)'==''">Win64</Platform>
+        <Platform Condition="'$(Platform)'==''">Win64x</Platform>
         <ProjectGuid>{AC917C2B-5870-48AD-981D-668AD3E4A533}</ProjectGuid>
         <ProjectName Condition="'$(ProjectName)'==''">SynEditDR</ProjectName>
         <ProjectVersion>20.3</ProjectVersion>

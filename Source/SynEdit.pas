@@ -284,6 +284,7 @@ type
   TCustomSynEditSearchNotFoundEvent = procedure(Sender: TObject;
     FindText: string) of object;
 
+  [ComponentPlatformsAttribute(pfidWindows)]
   TCustomSynEdit = class(TCustomControl)
   private
     procedure CMHintShow(var Message: TCMHintShow); message CM_HINTSHOW;

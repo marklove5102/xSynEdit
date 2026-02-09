@@ -5,7 +5,7 @@
         <Config Condition="'$(Config)'==''">Release</Config>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>SynEditCR.cpp</MainSource>
-        <Platform Condition="'$(Platform)'==''">Win64x</Platform>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectGuid>{30340F4A-5FE6-4B66-ACCF-D1A8B0758ADE}</ProjectGuid>
         <ProjectName Condition="'$(ProjectName)'==''">SynEditCR</ProjectName>
         <ProjectVersion>20.3</ProjectVersion>
@@ -70,7 +70,7 @@
         <ILINK_GenerateLibFile>true</ILINK_GenerateLibFile>
         <ILINK_LibraryPath>..\..\..\Source\Highlighters\;..\..\..\Source\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <ILINK_TranslatedLibraryPath>$(BDSLIB)\$(PLATFORM)\release\$(LANGDIR);$(ILINK_TranslatedLibraryPath)</ILINK_TranslatedLibraryPath>
-        <IncludePath>..\..\..\Source\Highlighters\;..\..\..\Source\;$(IncludePath)</IncludePath>
+        <IncludePath>..\..\..\Source\Highlighters\;..\..\..\Source\;$(BDSINCLUDE)\windows\crtl;$(IncludePath)</IncludePath>
         <IntermediateOutputDir>.\$(Platform)\$(Config)</IntermediateOutputDir>
         <Multithreaded>true</Multithreaded>
         <ProjectType>CppPackage</ProjectType>
